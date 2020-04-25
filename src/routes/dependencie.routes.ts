@@ -1,6 +1,6 @@
 import { Router } from 'express';
 
-import { getDependencies, createDependencie, findDependencie, editDependencie } from '../controllers/dependencie.controller';
+import { getDependencies, createDependencie, findDependencie, editDependencie, deleteDependencie } from '../controllers/dependencie.controller';
 
 const router = Router();
 
@@ -10,6 +10,7 @@ router.route('/')
 
 router.route('/:dependencieId')
     .get(findDependencie)
-    .post(editDependencie);
+    .post(editDependencie)
+    .delete(deleteDependencie);
 
 export default router;

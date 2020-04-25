@@ -33,3 +33,12 @@ export async function editDependencie(req:Request, res:Response): Promise<Respon
         message: 'Dependencie modificated'
     });
 }
+
+export async function deleteDependencie(req:Request, res:Response): Promise<Response> {
+    const id = req.params.dependencieId;
+    const conn = await connect();
+    await conn.query('DELETE FROM dependencies WHERE id = ?', [id]);
+    return res.json({
+        message: 'Dependencie removed'
+    });
+}
