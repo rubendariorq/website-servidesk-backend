@@ -1,4 +1,8 @@
 import express, { Application } from 'express';
+import morgan from 'morgan';
+
+//ROUTES
+import DependenciesRoutes from './routes/dependencie.routes';
 
 export class App {
 
@@ -8,6 +12,18 @@ export class App {
     constructor(port: number){
         this.app = express();
         this.port = port;
+
+        this.middlewares();
+        this.routes();
+    }
+
+    public middlewares():void {
+        this.app.use(morgan('dev'));
+        this.app.use(express.json());
+    }
+
+    public routes(): void {
+        this.app.use('/api/dependencie', DependenciesRoutes);
     }
 
     public async listen(): Promise<void>{
