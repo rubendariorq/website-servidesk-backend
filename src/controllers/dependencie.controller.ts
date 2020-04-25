@@ -24,3 +24,12 @@ export async function findDependencie(req:Request, res:Response): Promise<Respon
     const dependencie = await conn.query('SELECT * FROM dependencies WHERE id = ?', [id]);
     return res.json(dependencie[0]);
 }
+
+export async function editDependencie(req:Request, res:Response): Promise<Response> {
+    const dependencie:Dependencie = req.body;
+    const conn = await connect();
+    await conn.query('UPDATE dependencies SET name = ? WHERE id = ?', [dependencie.name, dependencie.id]);
+    return res.json({
+        message: 'Dependencie modificated'
+    });
+}
