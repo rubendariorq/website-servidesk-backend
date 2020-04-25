@@ -23,7 +23,7 @@ export class App {
     }
 
     public routes(): void {
-        this.app.use('/api/dependencie', DependenciesRoutes);
+        this.app.use('/api/dependencies', DependenciesRoutes);
     }
 
     public async listen(): Promise<void>{

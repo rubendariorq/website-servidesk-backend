@@ -17,3 +17,10 @@ export async function createDependencie(req: Request, res: Response): Promise<Re
         message: 'Dependencie created'
     });
 }
+
+export async function findDependencie(req:Request, res:Response): Promise<Response> {
+    const id = req.params.dependencieId;
+    const conn = await connect();
+    const dependencie = await conn.query('SELECT * FROM dependencies WHERE id = ?', [id]);
+    return res.json(dependencie[0]);
+}
