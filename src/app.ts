@@ -1,5 +1,6 @@
 import express, { Application } from 'express';
 import morgan from 'morgan';
+import cors from 'cors';
 
 //ROUTES
 import DependenciesRoutes from './routes/dependencie.routes';
@@ -19,6 +20,7 @@ export class App {
 
     public middlewares():void {
         this.app.use(morgan('dev'));
+        this.app.use(cors());
         this.app.use(express.json());
     }
 
