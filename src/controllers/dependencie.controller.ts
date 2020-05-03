@@ -23,7 +23,7 @@ class DependencieController {
         const newDependencie: Dependencie = req.body;
         try {
             const conn = await connect();
-            await conn.query('INSERT INTO dependencies (name) VALUES (?)', [newDependencie.name]);
+            await conn.query('INSERT INTO dependencies (name_dependencie) VALUES (?)', [newDependencie.name_dependencie]);
             conn.end();
             return res.json({
                 message: 'Dependencie created'
@@ -52,7 +52,7 @@ class DependencieController {
         try {
             const dependencie: Dependencie = req.body;
             const conn = await connect();
-            await conn.query('UPDATE dependencies SET name = ? WHERE id = ?', [dependencie.name, id]);
+            await conn.query('UPDATE dependencies SET name_dependencie = ? WHERE id = ?', [dependencie.name_dependencie, id]);
             conn.end();
             return res.json({
                 message: 'Dependencie modificated'
