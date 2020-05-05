@@ -21,6 +21,30 @@ export class UserController {
         }
     }
 
+    public async addUser(req: Request, res: Response): Promise<any> {
+        const user: User = req.body;
+        try {
+            const conn = await connect();
+            await conn.query("INSERT INTO users "
+                + "(email, first_name, last_name, password, password_changed_date, type_user, status, failed_attempts, dependencies_id)"
+                + "VALUES (?,?,?,?,?,?,?,?,?)", [user.email, user.first_name, user.last_name, user.password, user.password_changed_date, user.type_user, user.status, user.failde_attempts, user.dependencies_id]);
+
+            if (user.type_user == "Funcionario") {
+                await conn.query("INSERT INTO employee (users_email) VALUES (?)", [user.email]);
+            } else {
+                await conn.query("INSERT INTO employee_ti (users_email, type_employee_ti) VALUES (?,?)", [user.email, user.type_employee_ti]);
+            }
+
+            conn.end();
+            return res.json({
+                message: 'User created'
+            });
+        } catch (e) {
+            console.error(e);
+            return res.json(e);
+        }
+    }
+
 }
 
 const userController = new UserController();
