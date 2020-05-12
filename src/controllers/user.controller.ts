@@ -37,6 +37,48 @@ export class UserController {
         }
     }
 
+    public async getUsersForDependencie(req: Request, res: Response): Promise<any> {
+        const dependencie = req.params.dependencie;
+        try {
+            const conn = await connect();
+            const users = await conn.query("select * from users u "
+                + "inner join dependencies d on (u.dependencies_id = d.id) WHERE d.name_dependencie = ? "
+                + "AND u.type_user <> 'Profesional';", [dependencie]);
+            conn.end();
+            return res.json(users[0]);
+        } catch (e) {
+            console.error(e);
+            return res.json(e);
+        }
+    }
+
+    public async getUsersForTypeUser(req: Request, res: Response): Promise<any> {
+        const typeUser = req.params.typeUser;
+        try {
+            const conn = await connect();
+            const users = await conn.query("select * from users "
+                + "WHERE type_user = ?;", [typeUser]);
+            conn.end();
+            return res.json(users[0]);
+        } catch (e) {
+            console.error(e);
+            return res.json(e);
+        }
+    }
+
+    public async getUsersForStatus(req: Request, res: Response): Promise<any> {
+        const status = req.params.status;
+        try {
+            const conn = await connect();
+            const users = await conn.query("select * from users "
+                + "WHERE status = ? AND type_user <> 'Profesional';", [status]);
+            conn.end();
+            return res.json(users[0]);
+        } catch (e) {
+            console.error(e);
+            return res.json(e);
+        }
+    }
 }
 
 const userController = new UserController();
