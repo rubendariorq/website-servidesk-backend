@@ -16,4 +16,7 @@ router.route('/filter/type-user/:typeUser')
 router.route('/filter/status/:status')
     .get(userController.getUsersForStatus);
 
+router.route('/filter/email/:email')
+    .get(userController.getUserForEmail);
+
 export default router;

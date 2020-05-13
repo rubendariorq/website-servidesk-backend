@@ -38,7 +38,7 @@ class DependencieController {
         const id = req.params.dependencieId;
         try {
             const conn = await connect();
-            const dependencie = await conn.query('SELECT * FROM dependencies WHERE id = ?', [id]);
+            const dependencie = await conn.query('SELECT * FROM dependencies WHERE id_dependencie = ?', [id]);
             conn.end();
             return res.json(dependencie[0]);
         } catch (e) {
@@ -49,10 +49,11 @@ class DependencieController {
 
     public async editDependencie(req: Request, res: Response): Promise<any> {
         const id = req.params.dependencieId;
+        console.log(id);
         try {
             const dependencie: Dependencie = req.body;
             const conn = await connect();
-            await conn.query('UPDATE dependencies SET name_dependencie = ? WHERE id = ?', [dependencie.name_dependencie, id]);
+            await conn.query('UPDATE dependencies SET name_dependencie = ? WHERE id_dependencie = ?', [dependencie.name_dependencie, id]);
             conn.end();
             return res.json({
                 message: 'Dependencie modificated'
@@ -67,7 +68,7 @@ class DependencieController {
         const id = req.params.dependencieId;
         try {
             const conn = await connect();
-            await conn.query('DELETE FROM dependencies WHERE id = ?', [id]);
+            await conn.query('DELETE FROM dependencies WHERE id_dependencie = ?', [id]);
             conn.end();
             return res.json({
                 message: 'Dependencie removed'
