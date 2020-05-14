@@ -19,4 +19,8 @@ router.route('/filter/status/:status')
 router.route('/filter/email/:email')
     .get(userController.getUserForEmail);
 
+router.route('/:id')
+    .get(userController.getUserForId)
+    .put(userController.updateUser);
+
 export default router;

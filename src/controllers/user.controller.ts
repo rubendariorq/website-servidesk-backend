@@ -27,7 +27,7 @@ export class UserController {
             const conn = await connect();
             await conn.query("INSERT INTO users "
                 + "(email, first_name, last_name, password, password_changed_date, type_user, status, failed_attempts, dependencies_id_dependencie)"
-                + "VALUES (?,?,?,?,?,?,?,?,?)", [user.email, user.first_name, user.last_name, user.password, user.password_changed_date, user.type_user, user.status, user.failde_attempts, user.dependencies_id]);
+                + "VALUES (?,?,?,?,?,?,?,?,?)", [user.email, user.first_name, user.last_name, user.password, user.password_changed_date, user.type_user, user.status, user.failde_attempts, user.dependencies_id_dependencie]);
             conn.end();
             return res.json({
                 message: 'User created'
@@ -72,8 +72,8 @@ export class UserController {
         try {
             const conn = await connect();
             const users = await conn.query("select * from users u "
-            + "inner join dependencies d on (u.dependencies_id_dependencie = d.id_dependencie) "
-            + "WHERE status = ? AND type_user <> 'Profesional';", [status]);
+                + "inner join dependencies d on (u.dependencies_id_dependencie = d.id_dependencie) "
+                + "WHERE status = ? AND type_user <> 'Profesional';", [status]);
             conn.end();
             return res.json(users[0]);
         } catch (e) {
@@ -87,9 +87,41 @@ export class UserController {
         try {
             const conn = await connect();
             const users = await conn.query("select * from users "
-            + "WHERE email = ?;", [email]);
+                + "WHERE email = ?;", [email]);
             conn.end();
             return res.json(users[0]);
+        } catch (e) {
+            console.error(e);
+            return res.json(e);
+        }
+    }
+
+    public async getUserForId(req: Request, res: Response): Promise<any> {
+        const id = req.params.id;
+        try {
+            const conn = await connect();
+            const users = await conn.query("select * from users u "
+                + "inner join dependencies d on (u.dependencies_id_dependencie = d.id_dependencie) "
+                + "WHERE id_user = ?;", [id]);
+            conn.end();
+            return res.json(users[0]);
+        } catch (e) {
+            console.error(e);
+            return res.json(e);
+        }
+    }
+
+    public async updateUser(req: Request, res: Response): Promise<any> {
+        const id = req.params.id;
+        try {
+            const user: User = req.body;
+            const conn = await connect();
+            await conn.query("UPDATE users SET email = ?, first_name = ?, last_name = ?, type_user = ?, dependencies_id_dependencie = ? "
+                + "WHERE id_user = ?", [user.email, user.first_name, user.last_name, user.type_user, user.dependencies_id_dependencie, id]);
+            conn.end();
+            return res.json({
+                message: 'User modificated'
+            });
         } catch (e) {
             console.error(e);
             return res.json(e);
