@@ -21,6 +21,7 @@ router.route('/filter/email/:email')
 
 router.route('/:id')
     .get(userController.getUserForId)
-    .put(userController.updateUser);
+    .put(userController.updateUser)
+    .delete(userController.deleteUser);
 
 export default router;

@@ -127,6 +127,21 @@ export class UserController {
             return res.json(e);
         }
     }
+
+    public async deleteUser(req: Request, res: Response): Promise<any> {
+        const id = req.params.id;
+        try {
+            const conn = await connect();
+            await conn.query('DELETE FROM users WHERE id_user = ?', [id]);
+            conn.end();
+            return res.json({
+                message: 'User removed'
+            });
+        } catch (e) {
+            console.error(e);
+            return res.json(e);
+        }
+    }
 }
 
 const userController = new UserController();
