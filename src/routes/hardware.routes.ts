@@ -6,4 +6,7 @@ const router = Router();
 router.route('/computers')
     .post(hardwareController.createComputer);
 
+router.route('/ups')
+    .post(hardwareController.createUps);
+
 export default router;
