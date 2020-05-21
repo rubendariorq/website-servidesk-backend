@@ -1,7 +1,10 @@
 import { Request, Response } from "express";
 import { connect } from "../database";
+
+//Interfaces
 import { Computer } from "../interfaces/Computer";
 import { Ups } from "../interfaces/Ups";
+import { Peripheral } from "../interfaces/Peripheral";
 
 class HardwareController {
     constructor() { }
@@ -36,6 +39,24 @@ class HardwareController {
             conn.end();
             return res.json({
                 message: 'Ups created'
+            });
+        } catch (e) {
+            console.error(e);
+            return res.json(e);
+        }
+    }
+
+    public async createPeripheral(req: Request, res: Response): Promise<any> {
+        let peripheral: Peripheral = req.body;
+        try {
+            const conn = await connect();
+            await conn.query("INSERT INTO hardware (inventory_plate, serial, cost, months_warranty, brand, status, buy_date, provider, model, type_hardware) VALUES (?,?,?,?,?,?,?,?,?,?);", [peripheral.inventory_plate, peripheral.serial, peripheral.cost, peripheral.months_warranty, peripheral.brand, peripheral.status, peripheral.buy_date, peripheral.provider, peripheral.model, peripheral.type_hardware]);
+
+            await conn.query("INSERT INTO peripherals (type_peripheral, hardware_inventory_plate) VALUES (?,?);", [peripheral.type_peripheral, peripheral.hardware_inventory_plate]);
+
+            conn.end();
+            return res.json({
+                message: 'Peripheral created'
             });
         } catch (e) {
             console.error(e);

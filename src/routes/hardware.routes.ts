@@ -9,4 +9,7 @@ router.route('/computers')
 router.route('/ups')
     .post(hardwareController.createUps);
 
+router.route('/peripherals')
+    .post(hardwareController.createPeripheral);
+
 export default router;
