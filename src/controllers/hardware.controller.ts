@@ -63,6 +63,21 @@ class HardwareController {
             return res.json(e);
         }
     }
+
+    public async getAllHardware(req: Request, res: Response): Promise<any> {
+        try {
+            const conn = await connect();
+            const hardware = await conn.query("SELECT * FROM hardware h LEFT JOIN hardware_for_users hu " +
+            "ON (h.inventory_plate = hu.hardware_inventory_plate) LEFT JOIN users u " +
+            "ON (hu.users_id_user = u.id_user) LEFT JOIN dependencies d " + 
+            "ON (u.dependencies_id_dependencie = d.id_dependencie);");
+            conn.end();
+            return res.json(hardware[0]);
+        } catch (e) {
+            console.error(e);
+            return res.json(e);
+        }
+    }
 }
 
 const hardwareController = new HardwareController();

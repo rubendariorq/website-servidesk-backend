@@ -3,6 +3,9 @@ import hardwareController from "../controllers/hardware.controller";
 
 const router = Router();
 
+router.route('/')
+    .get(hardwareController.getAllHardware);
+
 router.route('/computers')
     .post(hardwareController.createComputer);
 
