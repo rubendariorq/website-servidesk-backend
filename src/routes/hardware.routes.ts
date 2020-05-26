@@ -6,6 +6,12 @@ const router = Router();
 router.route('/')
     .get(hardwareController.getAllHardware);
 
+router.route('/filter/dependencie/:dependencie')
+    .get(hardwareController.getHardwareForDependencies);
+
+router.route('/filter/type/:typeHardware')
+    .get(hardwareController.getHardwareForType);
+
 router.route('/computers')
     .post(hardwareController.createComputer);
 

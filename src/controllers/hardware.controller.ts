@@ -78,6 +78,40 @@ class HardwareController {
             return res.json(e);
         }
     }
+
+    public async getHardwareForDependencies(req: Request, res: Response): Promise<any> {
+        try {
+            const dependencie = req.params.dependencie;
+            const conn = await connect();
+            const hardware = await conn.query("SELECT * FROM hardware h LEFT JOIN hardware_for_users hu " +
+            "ON (h.inventory_plate = hu.hardware_inventory_plate) LEFT JOIN users u " +
+            "ON (hu.users_id_user = u.id_user) LEFT JOIN dependencies d " + 
+            "ON (u.dependencies_id_dependencie = d.id_dependencie) " +
+            "WHERE d.name_dependencie = ?;", [dependencie]);
+            conn.end();
+            return res.json(hardware[0]);
+        } catch (e) {
+            console.error(e);
+            return res.json(e);
+        }
+    }
+
+    public async getHardwareForType(req: Request, res: Response): Promise<any> {
+        try {
+            const typeHardware = req.params.typeHardware;
+            const conn = await connect();
+            const hardware = await conn.query("SELECT * FROM hardware h LEFT JOIN hardware_for_users hu " +
+            "ON (h.inventory_plate = hu.hardware_inventory_plate) LEFT JOIN users u " +
+            "ON (hu.users_id_user = u.id_user) LEFT JOIN dependencies d " + 
+            "ON (u.dependencies_id_dependencie = d.id_dependencie) " +
+            "WHERE h.type_hardware = ?;", [typeHardware]);
+            conn.end();
+            return res.json(hardware[0]);
+        } catch (e) {
+            console.error(e);
+            return res.json(e);
+        }
+    }
 }
 
 const hardwareController = new HardwareController();
