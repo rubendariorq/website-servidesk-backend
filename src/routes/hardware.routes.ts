@@ -6,6 +6,9 @@ const router = Router();
 router.route('/')
     .get(hardwareController.getAllHardware);
 
+router.route('/:id')
+    .delete(hardwareController.deleteHardware);
+
 router.route('/filter/dependencie/:dependencie')
     .get(hardwareController.getHardwareForDependencies);
 

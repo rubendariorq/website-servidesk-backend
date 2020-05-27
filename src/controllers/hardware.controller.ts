@@ -215,6 +215,21 @@ class HardwareController {
             return res.json(e);
         }
     }
+
+    public async deleteHardware(req: Request, res: Response): Promise<any> {
+        const id = req.params.id;
+        try {
+            const conn = await connect();
+            await conn.query('DELETE FROM hardware WHERE inventory_plate = ?', [id]);
+            conn.end();
+            return res.json({
+                message: 'Hardware removed'
+            });
+        } catch (e) {
+            console.error(e);
+            return res.json(e);
+        }
+    }
 }
 
 const hardwareController = new HardwareController();
