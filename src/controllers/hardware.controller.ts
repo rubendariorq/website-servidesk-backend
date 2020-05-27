@@ -147,6 +147,40 @@ class HardwareController {
             return res.json(e);
         }
     }
+
+    public async getUps(req: Request, res: Response): Promise<any> {
+        try {
+            const inventoryPlate = req.params.inventoryPlate;
+            const conn = await connect();
+            const hardware = await conn.query("SELECT * FROM hardware h INNER JOIN ups u " +
+            "ON (h.inventory_plate = u.hardware_inventory_plate) " +
+            "WHERE h.inventory_plate = ?;", [inventoryPlate]);
+            conn.end();
+            return res.json(hardware[0]);
+        } catch (e) {
+            console.error(e);
+            return res.json(e);
+        }
+    }
+
+    public async updateUps(req: Request, res: Response): Promise<any> {
+        const inventoryPlate = req.params.inventoryPlate;
+        let ups: Ups = req.body;
+        try {
+            const conn = await connect();
+            await conn.query("UPDATE hardware SET inventory_plate = ?, serial = ?, cost = ?, months_warranty = ?, brand = ?, status = ?, buy_date = ?, provider = ?, model = ?, type_hardware = ? WHERE inventory_plate = ?;", [ups.inventory_plate, ups.serial, ups.cost, ups.months_warranty, ups.brand, ups.status, ups.buy_date, ups.provider, ups.model, ups.type_hardware, inventoryPlate]);
+
+            await conn.query("UPDATE ups SET capacity = ? WHERE hardware_inventory_plate = ?;", [ups.capacity, ups.hardware_inventory_plate]);
+
+            conn.end();
+            return res.json({
+                message: 'Ups modificated'
+            });
+        } catch (e) {
+            console.error(e);
+            return res.json(e);
+        }
+    }
 }
 
 const hardwareController = new HardwareController();

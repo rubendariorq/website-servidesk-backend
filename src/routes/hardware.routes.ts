@@ -22,6 +22,10 @@ router.route('/computers/:inventoryPlate')
 router.route('/ups')
     .post(hardwareController.createUps);
 
+router.route('/ups/:inventoryPlate')
+    .get(hardwareController.getUps)
+    .put(hardwareController.updateUps);
+
 router.route('/peripherals')
     .post(hardwareController.createPeripheral);
 
