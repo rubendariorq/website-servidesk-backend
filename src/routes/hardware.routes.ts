@@ -29,4 +29,8 @@ router.route('/ups/:inventoryPlate')
 router.route('/peripherals')
     .post(hardwareController.createPeripheral);
 
+router.route('/peripherals/:inventoryPlate')
+    .get(hardwareController.getPeripheral)
+    .put(hardwareController.updatePeripheral);
+
 export default router;

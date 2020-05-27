@@ -181,6 +181,40 @@ class HardwareController {
             return res.json(e);
         }
     }
+
+    public async getPeripheral(req: Request, res: Response): Promise<any> {
+        try {
+            const inventoryPlate = req.params.inventoryPlate;
+            const conn = await connect();
+            const hardware = await conn.query("SELECT * FROM hardware h INNER JOIN peripherals p " +
+            "ON (h.inventory_plate = p.hardware_inventory_plate) " +
+            "WHERE h.inventory_plate = ?;", [inventoryPlate]);
+            conn.end();
+            return res.json(hardware[0]);
+        } catch (e) {
+            console.error(e);
+            return res.json(e);
+        }
+    }
+
+    public async updatePeripheral(req: Request, res: Response): Promise<any> {
+        const inventoryPlate = req.params.inventoryPlate;
+        let peripheral: Peripheral = req.body;
+        try {
+            const conn = await connect();
+            await conn.query("UPDATE hardware SET inventory_plate = ?, serial = ?, cost = ?, months_warranty = ?, brand = ?, status = ?, buy_date = ?, provider = ?, model = ?, type_hardware = ? WHERE inventory_plate = ?;", [peripheral.inventory_plate, peripheral.serial, peripheral.cost, peripheral.months_warranty, peripheral.brand, peripheral.status, peripheral.buy_date, peripheral.provider, peripheral.model, peripheral.type_hardware, inventoryPlate]);
+
+            await conn.query("UPDATE peripherals SET type_peripheral = ? WHERE hardware_inventory_plate = ?;", [peripheral.type_peripheral, peripheral.hardware_inventory_plate]);
+
+            conn.end();
+            return res.json({
+                message: 'Peripheral modificated'
+            });
+        } catch (e) {
+            console.error(e);
+            return res.json(e);
+        }
+    }
 }
 
 const hardwareController = new HardwareController();
