@@ -15,6 +15,10 @@ router.route('/filter/type/:typeHardware')
 router.route('/computers')
     .post(hardwareController.createComputer);
 
+router.route('/computers/:inventoryPlate')
+    .get(hardwareController.getComputer)
+    .put(hardwareController.updateComputer);
+
 router.route('/ups')
     .post(hardwareController.createUps);
 
