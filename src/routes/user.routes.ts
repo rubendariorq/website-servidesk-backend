@@ -19,6 +19,9 @@ router.route('/filter/status/:status')
 router.route('/filter/email/:email')
     .get(userController.getUserForEmail);
 
+router.route('/filter/name/:name')
+    .get(userController.getUserForName);
+
 router.route('/:id')
     .get(userController.getUserForId)
     .put(userController.updateUser)
