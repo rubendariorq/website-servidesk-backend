@@ -41,4 +41,7 @@ router.route('/peripherals/:inventoryPlate')
 router.route('/addUbication')
     .post(hardwareForUserController.addUbicationHardware);
 
+router.route('/addUbication/computer')
+    .post(hardwareForUserController.addUbicationComputer);
+
 export default router;
