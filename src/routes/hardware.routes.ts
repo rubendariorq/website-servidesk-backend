@@ -24,6 +24,12 @@ router.route('/computers/:inventoryPlate')
     .get(hardwareController.getComputer)
     .put(hardwareController.updateComputer);
 
+router.route('/computersForUser/:idUser')
+    .get(hardwareForUserController.getComputerForUser);
+
+router.route('/userForComputer/:idComputer')
+    .get(hardwareForUserController.getUserForComputerAllocated);
+
 router.route('/ups')
     .post(hardwareController.createUps);
 
@@ -33,6 +39,12 @@ router.route('/ups/:inventoryPlate')
 
 router.route('/peripherals')
     .post(hardwareController.createPeripheral);
+
+router.route('/peripheralsAddUbicationAndLinkComputer')
+    .post(hardwareForUserController.addUbicationPeripherialAndLinkComputer);
+
+router.route('/peripheralsAddUbication')
+    .post(hardwareForUserController.addUbicationPeripherial);
 
 router.route('/peripherals/:inventoryPlate')
     .get(hardwareController.getPeripheral)
