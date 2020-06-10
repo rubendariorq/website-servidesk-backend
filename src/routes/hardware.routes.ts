@@ -18,7 +18,8 @@ router.route('/filter/type/:typeHardware')
     .get(hardwareController.getHardwareForType);
 
 router.route('/computers')
-    .post(hardwareController.createComputer);
+    .post(hardwareController.createComputer)
+    .put(hardwareForUserController.deallocateComputer);
 
 router.route('/computers/:inventoryPlate')
     .get(hardwareController.getComputer)
@@ -31,14 +32,16 @@ router.route('/userForComputer/:idComputer')
     .get(hardwareForUserController.getUserForComputerAllocated);
 
 router.route('/ups')
-    .post(hardwareController.createUps);
+    .post(hardwareController.createUps)
+    .put(hardwareForUserController.deallocateUps);
 
 router.route('/ups/:inventoryPlate')
     .get(hardwareController.getUps)
     .put(hardwareController.updateUps);
 
 router.route('/peripherals')
-    .post(hardwareController.createPeripheral);
+    .post(hardwareController.createPeripheral)
+    .put(hardwareForUserController.deallocatePeripheral);
 
 router.route('/peripheralsAddUbicationAndLinkComputer')
     .post(hardwareForUserController.addUbicationPeripherialAndLinkComputer);

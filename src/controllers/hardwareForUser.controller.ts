@@ -92,7 +92,6 @@ export class HardwareForUserController {
 
     public async addUbicationPeripherialAndLinkComputer(req: Request, res: Response): Promise<any> {
         const arrayAux = req.body;
-        console.log(arrayAux);
         
         let hardwareUbications: HardwareUbications;
         hardwareUbications = arrayAux[0];
@@ -133,6 +132,82 @@ export class HardwareForUserController {
             conn.end();
             return res.json({
                 message: 'Peripheral linked'
+            });
+        } catch (e) {
+            console.error(e);
+            return res.json(e);
+        }
+    }
+
+    public async deallocateUps(req: Request, res: Response): Promise<any> {
+        const arrayAux = req.body;
+        
+        let hardwareUbicationsOld: HardwareUbications;
+        hardwareUbicationsOld = arrayAux[0];
+        let hardwareUbicationsNew: HardwareUbications;
+        hardwareUbicationsNew = arrayAux[1];
+
+        try {
+            const conn = await connect();
+            await conn.query("UPDATE hardware_for_users SET return_date = ? WHERE hardware_inventory_plate = ? AND assignment_date = ? AND users_id_user = ?;", [hardwareUbicationsNew.return_date, hardwareUbicationsOld.hardware_inventory_plate, hardwareUbicationsOld.assignment_date, hardwareUbicationsOld.users_id_user]);
+
+            await conn.query("UPDATE hardware SET allocation_status = ? WHERE inventory_plate = ?", ["Sin asignar", hardwareUbicationsNew.hardware_inventory_plate]);
+
+            conn.end();
+            return res.json({
+                message: 'Deallocate UPS'
+            });
+        } catch (e) {
+            console.error(e);
+            return res.json(e);
+        }
+    }
+
+    public async deallocatePeripheral(req: Request, res: Response): Promise<any> {
+        const arrayAux = req.body;
+        
+        let hardwareUbicationsOld: HardwareUbications;
+        hardwareUbicationsOld = arrayAux[0];
+        let hardwareUbicationsNew: HardwareUbications;
+        hardwareUbicationsNew = arrayAux[1];
+
+        try {
+            const conn = await connect();
+            await conn.query("DELETE FROM peripherals_for_computer WHERE peripherals_hardware_inventory_plate = ?", [hardwareUbicationsNew.hardware_inventory_plate]);
+
+            await conn.query("UPDATE hardware_for_users SET return_date = ? WHERE hardware_inventory_plate = ? AND assignment_date = ? AND users_id_user = ?;", [hardwareUbicationsNew.return_date, hardwareUbicationsOld.hardware_inventory_plate, hardwareUbicationsOld.assignment_date, hardwareUbicationsOld.users_id_user]);
+
+            await conn.query("UPDATE hardware SET allocation_status = ? WHERE inventory_plate = ?", ["Sin asignar", hardwareUbicationsNew.hardware_inventory_plate]);
+
+            conn.end();
+            return res.json({
+                message: 'Deallocate Perpheral'
+            });
+        } catch (e) {
+            console.error(e);
+            return res.json(e);
+        }
+    }
+
+    public async deallocateComputer(req: Request, res: Response): Promise<any> {
+        const arrayAux = req.body;
+        
+        let hardwareUbicationsOld: HardwareUbications;
+        hardwareUbicationsOld = arrayAux[0];
+        let hardwareUbicationsNew: HardwareUbications;
+        hardwareUbicationsNew = arrayAux[1];
+
+        try {
+            const conn = await connect();
+            await conn.query("UPDATE computers SET name_machine = NULL, mac_direction = NULL, ip_direction = NULL, internet_type_connection = NULL, internet_provider = NULL WHERE hardware_inventory_plate = ?", [hardwareUbicationsNew.hardware_inventory_plate]);
+
+            await conn.query("UPDATE hardware_for_users SET return_date = ? WHERE hardware_inventory_plate = ? AND assignment_date = ? AND users_id_user = ?;", [hardwareUbicationsNew.return_date, hardwareUbicationsOld.hardware_inventory_plate, hardwareUbicationsOld.assignment_date, hardwareUbicationsOld.users_id_user]);
+
+            await conn.query("UPDATE hardware SET allocation_status = ? WHERE inventory_plate = ?", ["Sin asignar", hardwareUbicationsNew.hardware_inventory_plate]);
+
+            conn.end();
+            return res.json({
+                message: 'Deallocate Computer'
             });
         } catch (e) {
             console.error(e);
