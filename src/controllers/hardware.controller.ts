@@ -237,6 +237,34 @@ class HardwareController {
             return res.json(e);
         }
     }
+
+    public async getPrintersForComputer(req: Request, res: Response): Promise<any> {
+        try {
+            const idComp = req.params.idComp;
+            const conn = await connect();
+            const printers = await conn.query("SELECT * FROM peripherals_for_computer pc INNER JOIN peripherals p " +
+            "ON (pc.peripherals_hardware_inventory_plate = p.hardware_inventory_plate) INNER JOIN hardware h " +
+            "ON (p.hardware_inventory_plate = h.inventory_plate) WHERE computers_hardware_inventory_plate = ?;", [idComp]);
+            conn.end();
+            return res.json(printers[0]);
+        } catch (e) {
+            console.error(e);
+            return res.json(e);
+        }
+    }
+
+    public async getUbicationPrinter(req: Request, res: Response): Promise<any> {
+        try {
+            const idPrinter = req.params.idPrinter;
+            const conn = await connect();
+            const ubication = await conn.query("SELECT * FROM hardware_for_users WHERE hardware_inventory_plate = ? AND return_date IS NULL;", [idPrinter]);
+            conn.end();
+            return res.json(ubication[0]);
+        } catch (e) {
+            console.error(e);
+            return res.json(e);
+        }
+    }
 }
 
 const hardwareController = new HardwareController();

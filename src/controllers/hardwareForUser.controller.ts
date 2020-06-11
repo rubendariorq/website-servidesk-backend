@@ -6,6 +6,7 @@ import { connect } from "../database";
 import { HardwareUbications } from "../interfaces/HardwareUbications";
 import { Computer } from "../interfaces/Computer";
 import { PeripheralForComputer } from "../interfaces/PeripheralForComputer";
+import { Printers } from "../interfaces/Printers";
 
 export class HardwareForUserController {
 
@@ -66,7 +67,7 @@ export class HardwareForUserController {
             "ON (hu.users_id_user = u.id_user) INNER JOIN dependencies d " +
             "ON (u.dependencies_id_dependencie = d.id_dependencie) INNER JOIN hardware h " +
             "ON (hu.hardware_inventory_plate = h.inventory_plate) " +
-            "WHERE id_user = ? AND type_hardware = ?;", [idUser, 'Computador']);
+            "WHERE id_user = ? AND type_hardware = ? AND return_date IS NULL;", [idUser, 'Computador']);
             conn.end();
             console.log(hardware[0]);
             return res.json(hardware[0]);
@@ -170,6 +171,7 @@ export class HardwareForUserController {
         hardwareUbicationsOld = arrayAux[0];
         let hardwareUbicationsNew: HardwareUbications;
         hardwareUbicationsNew = arrayAux[1];
+        console.log(hardwareUbicationsNew);
 
         try {
             const conn = await connect();
@@ -181,7 +183,24 @@ export class HardwareForUserController {
 
             conn.end();
             return res.json({
-                message: 'Deallocate Perpheral'
+                message: 'Deallocate Peripheral'
+            });
+        } catch (e) {
+            console.error(e);
+            return res.json(e);
+        }
+    }
+
+    public async disconetPeripheral(req: Request, res: Response): Promise<any> {
+        const idPrinter = req.params.idComp;
+    
+        try {
+            const conn = await connect();
+            await conn.query("DELETE FROM peripherals_for_computer WHERE peripherals_hardware_inventory_plate = ?", [idPrinter]);
+
+            conn.end();
+            return res.json({
+                message: 'Disconect Peripheral'
             });
         } catch (e) {
             console.error(e);

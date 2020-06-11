@@ -59,4 +59,11 @@ router.route('/addUbication')
 router.route('/addUbication/computer')
     .post(hardwareForUserController.addUbicationComputer);
 
+router.route('/printers/:idComp')
+    .get(hardwareController.getPrintersForComputer)
+    .delete(hardwareForUserController.disconetPeripheral);
+
+router.route('/printersUbication/:idPrinter')
+    .get(hardwareController.getUbicationPrinter);
+
 export default router;
