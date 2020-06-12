@@ -21,6 +21,9 @@ router.route('/computers')
     .post(hardwareController.createComputer)
     .put(hardwareForUserController.deallocateComputer);
 
+router.route('/computer')
+    .put(hardwareController.updateNetworkConfiguration);
+
 router.route('/computers/:inventoryPlate')
     .get(hardwareController.getComputer)
     .put(hardwareController.updateComputer);

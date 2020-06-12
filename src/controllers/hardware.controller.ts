@@ -265,6 +265,23 @@ class HardwareController {
             return res.json(e);
         }
     }
+
+    public async updateNetworkConfiguration(req: Request, res: Response): Promise<any> {
+        let computer: Computer = req.body;
+        
+        try {
+            const conn = await connect();
+            await conn.query("UPDATE computers SET name_machine = ?, ip_direction = ?, mac_direction = ?, internet_type_connection = ? WHERE hardware_inventory_plate = ?;", [computer.name_machine, computer.ip_direction, computer.mac_direction, computer.internet_type_connection, computer.hardware_inventory_plate]);
+
+            conn.end();
+            return res.json({
+                message: 'Network configuration modificated'
+            });
+        } catch (e) {
+            console.error(e);
+            return res.json(e);
+        }
+    }
 }
 
 const hardwareController = new HardwareController();
