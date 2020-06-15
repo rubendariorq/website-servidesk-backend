@@ -6,6 +6,7 @@ import cors from 'cors';
 import DependenciesRoutes from './routes/dependencie.routes';
 import UserRoutes from "./routes/user.routes";
 import HardwareRoutes from "./routes/hardware.routes";
+import LicenseRoutes from "./routes/license.routes";
 
 export class App {
 
@@ -30,6 +31,7 @@ export class App {
         this.app.use('/api/dependencies', DependenciesRoutes);
         this.app.use('/api/users', UserRoutes);
         this.app.use('/api/hardware', HardwareRoutes);
+        this.app.use('/api/licenses', LicenseRoutes);
     }
 
     public async listen(): Promise<void>{
