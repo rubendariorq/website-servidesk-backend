@@ -23,6 +23,18 @@ export class SoftwareController {
             return res.json(e);
         }
     }
+
+    public async getAllSoftware(req: Request, res: Response): Promise<any> {
+        try {
+            const conn = await connect();
+            const licenses = await conn.query("select * from software;");
+            conn.end();
+            return res.json(licenses[0]);
+        } catch (e) {
+            console.error(e);
+            return res.json(e);
+        }
+    }
 }
 
 const softwareController = new SoftwareController();
