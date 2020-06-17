@@ -23,6 +23,18 @@ export class LicenseController {
             return res.json(e);
         }
     }
+
+    public async getLicenses(req: Request, res: Response): Promise<any> {
+        try {
+            const conn = await connect();
+            const licenses = await conn.query("select * from licenses;");
+            conn.end();
+            return res.json(licenses[0]);
+        } catch (e) {
+            console.error(e);
+            return res.json(e);
+        }
+    }
 }
 
 const licenseController = new LicenseController();
