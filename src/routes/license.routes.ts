@@ -5,6 +5,10 @@ const router = Router();
 
 router.route('/')
     .post(licenseController.addLicense)
-    .get(licenseController.getLicenses);
+    .get(licenseController.getLicenses)
+    .put(licenseController.editLicense);
+
+router.route('/:id')
+    .get(licenseController.getLicense);
 
 export default router;
