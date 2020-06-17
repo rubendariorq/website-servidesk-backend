@@ -63,6 +63,21 @@ export class SoftwareController {
             return res.json(e);
         }
     }
+
+    public async deleteSoftware(req: Request, res: Response): Promise<any> {
+        const id = req.params.id;
+        try {
+            const conn = await connect();
+            await conn.query('DELETE FROM software WHERE id_software = ?', [id]);
+            conn.end();
+            return res.json({
+                message: 'Software removed'
+            });
+        } catch (e) {
+            console.error(e);
+            return res.json(e);
+        }
+    }
 }
 
 const softwareController = new SoftwareController();

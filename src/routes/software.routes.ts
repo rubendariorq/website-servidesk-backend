@@ -9,6 +9,7 @@ router.route('/')
     .put(softwareController.editSoftware);
 
 router.route('/:id')
-    .get(softwareController.getSoftware);
+    .get(softwareController.getSoftware)
+    .delete(softwareController.deleteSoftware);
 
 export default router;
