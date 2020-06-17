@@ -9,6 +9,7 @@ router.route('/')
     .put(licenseController.editLicense);
 
 router.route('/:id')
-    .get(licenseController.getLicense);
+    .get(licenseController.getLicense)
+    .delete(licenseController.deleteLicense);
 
 export default router;

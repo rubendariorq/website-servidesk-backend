@@ -63,6 +63,21 @@ export class LicenseController {
             return res.json(e);
         }
     }
+
+    public async deleteLicense(req: Request, res: Response): Promise<any> {
+        const id = req.params.id;
+        try {
+            const conn = await connect();
+            await conn.query('DELETE FROM licenses WHERE id_license = ?', [id]);
+            conn.end();
+            return res.json({
+                message: 'License removed'
+            });
+        } catch (e) {
+            console.error(e);
+            return res.json(e);
+        }
+    }
 }
 
 const licenseController = new LicenseController();
