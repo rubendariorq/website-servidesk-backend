@@ -7,6 +7,7 @@ import DependenciesRoutes from './routes/dependencie.routes';
 import UserRoutes from "./routes/user.routes";
 import HardwareRoutes from "./routes/hardware.routes";
 import LicenseRoutes from "./routes/license.routes";
+import SoftwareRoutes from "./routes/software.routes";
 
 export class App {
 
@@ -32,6 +33,7 @@ export class App {
         this.app.use('/api/users', UserRoutes);
         this.app.use('/api/hardware', HardwareRoutes);
         this.app.use('/api/licenses', LicenseRoutes);
+        this.app.use('/api/software', SoftwareRoutes);
     }
 
     public async listen(): Promise<void>{
