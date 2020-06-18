@@ -15,4 +15,7 @@ router.route('/:id')
 router.route('/filter/:typeSoftware')
     .get(softwareController.getSoftwareForType);
 
+router.route('/install')
+    .post(softwareController.installSoftware);
+
 export default router;

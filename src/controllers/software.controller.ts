@@ -2,6 +2,7 @@ import { Request, Response } from "express";
 
 import { connect } from "../database";
 import { Software } from "../interfaces/Software";
+import { SoftwareForComputer } from "../interfaces/SoftwareForComputer";
 
 export class SoftwareController {
 
@@ -85,6 +86,23 @@ export class SoftwareController {
             conn.end();
             return res.json({
                 message: 'Software removed'
+            });
+        } catch (e) {
+            console.error(e);
+            return res.json(e);
+        }
+    }
+
+    public async installSoftware(req: Request, res: Response): Promise<any> {
+        const softwareForComputer: SoftwareForComputer = req.body;
+        try {
+            const conn = await connect();
+            await conn.query("INSERT INTO software_for_computer "
+                + "(computers_hardware_inventory_plate, software_id_software, licenses_id_license, instalation_date)"
+                + "VALUES (?,?,?,?)", [softwareForComputer.inventory_plate, softwareForComputer.id_software, softwareForComputer.id_license, softwareForComputer.instalation_date]);
+            conn.end();
+            return res.json({
+                message: 'Software installed'
             });
         } catch (e) {
             console.error(e);
