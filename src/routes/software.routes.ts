@@ -12,4 +12,7 @@ router.route('/:id')
     .get(softwareController.getSoftware)
     .delete(softwareController.deleteSoftware);
 
+router.route('/filter/:typeSoftware')
+    .get(softwareController.getSoftwareForType);
+
 export default router;

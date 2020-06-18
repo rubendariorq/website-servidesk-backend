@@ -49,6 +49,19 @@ export class SoftwareController {
         }
     }
 
+    public async getSoftwareForType(req: Request, res: Response): Promise<any> {
+        const typeSoftware = req.params.typeSoftware;
+        try {
+            const conn = await connect();
+            const software = await conn.query("select * from software WHERE software_type = ?;",[typeSoftware]);
+            conn.end();
+            return res.json(software[0]);
+        } catch (e) {
+            console.error(e);
+            return res.json(e);
+        }
+    }
+
     public async editSoftware(req: Request, res: Response): Promise<any> {
         try {
             const software: Software = req.body;
