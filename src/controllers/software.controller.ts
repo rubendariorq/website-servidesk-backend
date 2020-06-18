@@ -12,8 +12,8 @@ export class SoftwareController {
         try {
             const conn = await connect();
             await conn.query("INSERT INTO software "
-                + "(name_software, version, status_software, development_information, support, plataform, development_language, provider, software_property, code_property, status_support, cost_maintenance, contractual_use_restriction)"
-                + "VALUES (?,?,?,?,?,?,?,?,?,?,?,?,?)", [software.name_software, software.version, software.status_software, software.development_information, software.support, software.plataform, software.development_language, software.provider, software.software_property, software.code_property, software.status_support, software.cost_maintenance, software.contractual_use_restriction]);
+                + "(name_software, version, status_software, development_information, support, plataform, development_language, provider, software_property, code_property, status_support, cost_maintenance, contractual_use_restriction, access_type, software_type)"
+                + "VALUES (?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)", [software.name_software, software.version, software.status_software, software.development_information, software.support, software.plataform, software.development_language, software.provider, software.software_property, software.code_property, software.status_support, software.cost_maintenance, software.contractual_use_restriction, software.access_type, software.software_type]);
             conn.end();
             return res.json({
                 message: 'Software created'
@@ -53,7 +53,7 @@ export class SoftwareController {
         try {
             const software: Software = req.body;
             const conn = await connect();
-            await conn.query('UPDATE software SET name_software = ?, version = ?, status_software = ?, development_information = ?, support = ?, plataform = ?, development_language = ?, provider = ?, software_property = ?, code_property = ?, status_support = ?, cost_maintenance = ?, contractual_use_restriction = ? WHERE id_software = ?', [software.name_software, software.version, software.status_software, software.development_information, software.support, software.plataform, software.development_language, software.provider, software.software_property, software.code_property,software.status_support, software.cost_maintenance, software.contractual_use_restriction, software.id_software]);
+            await conn.query('UPDATE software SET name_software = ?, version = ?, status_software = ?, development_information = ?, support = ?, plataform = ?, development_language = ?, provider = ?, software_property = ?, code_property = ?, status_support = ?, cost_maintenance = ?, contractual_use_restriction = ?, access_type = ?, software_type = ? WHERE id_software = ?', [software.name_software, software.version, software.status_software, software.development_information, software.support, software.plataform, software.development_language, software.provider, software.software_property, software.code_property,software.status_support, software.cost_maintenance, software.contractual_use_restriction, software.access_type, software.software_type, software.id_software]);
             conn.end();
             return res.json({
                 message: 'Software modificated'
