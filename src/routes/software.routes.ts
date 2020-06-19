@@ -18,4 +18,7 @@ router.route('/filter/:typeSoftware')
 router.route('/install')
     .post(softwareController.installSoftware);
 
+router.route('/install/:inventoryPlate')
+    .get(softwareController.getSoftwareInstalledForComputer);
+
 export default router;

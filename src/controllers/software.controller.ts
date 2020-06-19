@@ -109,6 +109,22 @@ export class SoftwareController {
             return res.json(e);
         }
     }
+
+    public async getSoftwareInstalledForComputer(req: Request, res: Response): Promise<any> {
+        try {
+            const inventoryPlate = req.params.inventoryPlate;
+            const conn = await connect();
+            const software = await conn.query("SELECT * FROM software_for_computer sc INNER JOIN software s " +
+            "ON (sc.software_id_software = s.id_software) INNER JOIN licenses l " +
+            "ON (sc.licenses_id_license = l.id_license) " +
+            "WHERE sc.computers_hardware_inventory_plate = ?;", [inventoryPlate]);
+            conn.end();
+            return res.json(software[0]);
+        } catch (e) {
+            console.error(e);
+            return res.json(e);
+        }
+    }
 }
 
 const softwareController = new SoftwareController();
