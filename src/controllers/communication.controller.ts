@@ -23,6 +23,19 @@ export class CommunicationController {
             return res.json(e);
         }
     }
+
+    public async getCommunications(req: Request, res: Response): Promise<any> {
+        try {
+            const conn = await connect();
+            const communications = await conn.query("select * from communications c INNER JOIN dependencies d " 
+            + "ON (c.dependencies_id_dependencie = d.id_dependencie);");
+            conn.end();
+            return res.json(communications[0]);
+        } catch (e) {
+            console.error(e);
+            return res.json(e);
+        }
+    }
 }
 
 const communicationController = new CommunicationController();
