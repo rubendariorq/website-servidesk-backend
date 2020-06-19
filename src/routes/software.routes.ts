@@ -18,6 +18,9 @@ router.route('/filter/:typeSoftware')
 router.route('/install')
     .post(softwareController.installSoftware);
 
+router.route('/uninstall')
+    .post(softwareController.deleteSoftwareInstalled);
+
 router.route('/install/:inventoryPlate')
     .get(softwareController.getSoftwareInstalledForComputer);
 

@@ -125,6 +125,21 @@ export class SoftwareController {
             return res.json(e);
         }
     }
+
+    public async deleteSoftwareInstalled(req: Request, res: Response): Promise<any> {
+        const softwareForComputer: SoftwareForComputer = req.body;
+        try {
+            const conn = await connect();
+            await conn.query('DELETE FROM software_for_computer WHERE computers_hardware_inventory_plate = ? AND software_id_software = ? AND licenses_id_license = ?', [softwareForComputer.inventory_plate, softwareForComputer.id_software, softwareForComputer.id_license]);
+            conn.end();
+            return res.json({
+                message: 'Software uninstall'
+            });
+        } catch (e) {
+            console.error(e);
+            return res.json(e);
+        }
+    }
 }
 
 const softwareController = new SoftwareController();
