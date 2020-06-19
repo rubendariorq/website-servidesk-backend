@@ -7,4 +7,8 @@ router.route('/')
     .get(communicationController.getCommunications)
     .post(communicationController.addCommunication);
 
+router.route('/:inventoryPlate')
+    .get(communicationController.getCommunication)
+    .put(communicationController.updateCommunication);
+
 export default router;
