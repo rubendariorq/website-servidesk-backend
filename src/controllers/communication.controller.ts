@@ -66,6 +66,21 @@ export class CommunicationController {
             return res.json(e);
         }
     }
+
+    public async deleteCommunication(req: Request, res: Response): Promise<any> {
+        const inventoryPlate = req.params.inventoryPlate;
+        try {
+            const conn = await connect();
+            await conn.query('DELETE FROM communications WHERE inventory_plate_communication = ?', [inventoryPlate]);
+            conn.end();
+            return res.json({
+                message: 'communication removed'
+            });
+        } catch (e) {
+            console.error(e);
+            return res.json(e);
+        }
+    }
 }
 
 const communicationController = new CommunicationController();
