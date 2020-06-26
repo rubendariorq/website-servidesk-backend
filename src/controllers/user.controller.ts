@@ -2,6 +2,7 @@ import { Request, Response } from "express";
 
 import { connect } from "../database";
 import { User } from "../interfaces/User";
+import util from "../util";
 
 export class UserController {
 
@@ -23,6 +24,10 @@ export class UserController {
 
     public async addUser(req: Request, res: Response): Promise<any> {
         const user: User = req.body;
+
+        const passwordEncrypt = await util.encryptPassword(user.password);
+        user.password = passwordEncrypt;
+
         try {
             const conn = await connect();
             await conn.query("INSERT INTO users "
